@@ -10,28 +10,46 @@
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background:linear-gradient(135deg,#fff0f5,#ffd6e7,#ffc2d1);
   overflow:hidden;
+  background: linear-gradient(135deg,#fff0f6,#ffd6e7,#ffc2d1,#ffd6e7);
+  background-size:300% 300%;
+  animation:bgFlow 12s ease infinite;
 }
 
-/* PARALLAX HEARTS */
+@keyframes bgFlow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* SOFT LIGHT OVERLAY */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 60%);
+  pointer-events:none;
+}
+
+/* FLOATING HEARTS */
 .heart{
   position:absolute;
-  width:10px;height:10px;
+  width:12px;height:12px;
   background:#ff4d6d;
   transform:rotate(45deg);
   opacity:.2;
+  filter:blur(.3px);
   animation:float 14s linear infinite;
 }
 .heart::before,.heart::after{
   content:"";
   position:absolute;
-  width:10px;height:10px;
+  width:12px;height:12px;
   background:#ff4d6d;
   border-radius:50%;
 }
-.heart::before{top:-5px;}
-.heart::after{left:-5px;}
+.heart::before{top:-6px;}
+.heart::after{left:-6px;}
 
 @keyframes float{
   0%{transform:translate3d(-10vw,100vh,0) rotate(45deg);}
@@ -47,9 +65,9 @@ body{
   justify-content:center;
   align-items:center;
   opacity:0;
-  transform:scale(.95) translateY(20px);
+  transform:scale(.94) translateY(30px);
   pointer-events:none;
-  transition:all .6s cubic-bezier(.4,0,.2,1);
+  transition:all .65s cubic-bezier(.4,0,.2,1);
 }
 .screen.active{
   opacity:1;
@@ -57,44 +75,63 @@ body{
   pointer-events:auto;
 }
 
-/* CARD */
+/* CARD (UPGRADED) */
 .card{
-  width:85%;
-  max-width:340px;
-  padding:28px;
-  border-radius:22px;
+  width:88%;
+  max-width:360px;
+  padding:32px 24px;
+  border-radius:26px;
   background:rgba(255,255,255,0.35);
-  backdrop-filter:blur(18px);
-  box-shadow:0 10px 40px rgba(0,0,0,0.1);
+  backdrop-filter:blur(20px);
+  box-shadow:
+    0 15px 50px rgba(255,77,109,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  border:1px solid rgba(255,255,255,0.4);
   text-align:center;
+  animation:cardIn .7s ease;
 }
 
-h2{color:#ff4d6d;}
-p{font-size:14px;color:#444;line-height:1.5;}
+@keyframes cardIn{
+  from{opacity:0; transform:scale(.9) translateY(20px);}
+  to{opacity:1; transform:scale(1) translateY(0);}
+}
+
+p{
+  font-size:15px;
+  color:#444;
+  line-height:1.6;
+  margin:0;
+}
 
 /* BUTTON */
 button{
-  margin-top:18px;
-  padding:12px 20px;
+  margin-top:22px;
+  padding:12px 22px;
   border:none;
-  border-radius:25px;
+  border-radius:30px;
   background:linear-gradient(135deg,#ff4d6d,#ff85a2);
   color:white;
   font-size:14px;
   cursor:pointer;
-  transition:.2s;
+  transition:.25s;
 }
-button:active{transform:scale(.92);}
+button:hover{
+  transform:translateY(-2px) scale(1.03);
+}
+button:active{
+  transform:scale(.92);
+}
 
-/* WHATSAPP BUTTON */
+/* WHATSAPP CTA */
 .wa{
-  background:linear-gradient(135deg,#25D366,#4BE081);
+  background:linear-gradient(135deg,#ff4d6d,#ff85a2);
+  box-shadow:0 0 25px rgba(255,77,109,0.5);
   animation:pulse 2s infinite;
 }
 @keyframes pulse{
-  0%{box-shadow:0 0 10px rgba(37,211,102,.4);}
-  50%{box-shadow:0 0 25px rgba(37,211,102,.8);}
-  100%{box-shadow:0 0 10px rgba(37,211,102,.4);}
+  0%{box-shadow:0 0 12px rgba(255,77,109,.4);}
+  50%{box-shadow:0 0 30px rgba(255,77,109,.9);}
+  100%{box-shadow:0 0 12px rgba(255,77,109,.4);}
 }
 </style>
 
@@ -103,7 +140,8 @@ button:active{transform:scale(.92);}
 <body>
 
 <script>
-for(let i=0;i<30;i++){
+/* HEARTS */
+for(let i=0;i<35;i++){
  let h=document.createElement("div");
  h.className="heart";
  h.style.left=Math.random()*100+"vw";
@@ -136,11 +174,13 @@ function render(){
   <div class="screen active">
     <div class="card">
       <p>${texts[i]}</p>
-      ${i<texts.length-1
+      ${
+        i<texts.length-1
         ? `<button onclick="next()">continue 💖</button>`
         : `<a href="https://wa.me/919205781271?text=hi%20babe">
-            <button class="wa">message me 💖</button>
-          </a>`}
+            <button class="wa">prove it… text me 😌</button>
+          </a>`
+      }
     </div>
   </div>`;
 }
