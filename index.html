@@ -12,25 +12,61 @@ body{
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   overflow:hidden;
   background:linear-gradient(180deg,#fff0f6,#ffc2d1);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
 }
 
 /* HEART PROGRESS */
 .heart-container{
-  margin-top:20px;
-  font-size:32px;
-  letter-spacing:5px;
+  position:absolute;
+  top:20px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  z-index:10;
 }
 .heart-container span{
-  opacity:.2;
+  font-size:18px;
+  opacity:.25;
+  transform:scale(.9);
   transition:.4s;
 }
 .heart-container span.active{
   opacity:1;
   transform:scale(1.2);
+}
+
+/* FLOAT HEARTS */
+.heart{
+  position:absolute;
+  width:10px;height:10px;
+  background:#ff4d6d;
+  transform:rotate(45deg);
+  opacity:.2;
+  animation:float 14s linear infinite;
+}
+.heart::before,.heart::after{
+  content:"";
+  position:absolute;
+  width:10px;height:10px;
+  background:#ff4d6d;
+  border-radius:50%;
+}
+.heart::before{top:-5px;}
+.heart::after{left:-5px;}
+@keyframes float{
+  0%{transform:translate3d(-10vw,100vh,0) rotate(45deg);}
+  50%{transform:translate3d(10vw,40vh,0) rotate(45deg);}
+  100%{transform:translate3d(-10vw,-10vh,0) rotate(45deg);}
+}
+
+/* HEART RAIN */
+.rain{
+  position:absolute;
+  font-size:14px;
+  animation:rainFall linear infinite;
+}
+@keyframes rainFall{
+  to{transform:translateY(110vh);}
 }
 
 /* SCREEN */
@@ -55,7 +91,7 @@ body{
 .card{
   width:90%;
   max-width:360px;
-  padding:28px;
+  padding:26px;
   border-radius:22px;
   background:rgba(255,255,255,0.6);
   backdrop-filter:blur(10px);
@@ -93,6 +129,19 @@ button:active{
   50%{box-shadow:0 0 25px rgba(255,77,109,.8);}
   100%{box-shadow:0 0 10px rgba(255,77,109,.4);}
 }
+
+/* BLAST HEART */
+.blast{
+  position:fixed;
+  font-size:20px;
+  animation:blastAnim 1.2s ease-out forwards;
+}
+@keyframes blastAnim{
+  to{
+    transform:translate(var(--x),var(--y)) scale(0);
+    opacity:0;
+  }
+}
 </style>
 
 </head>
@@ -102,22 +151,35 @@ button:active{
 <!-- HEART PROGRESS -->
 
 <div class="heart-container" id="heart">
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
-  <span>💖</span>
+  <span>💖</span><span>💖</span><span>💖</span><span>💖</span><span>💖</span>
+  <span>💖</span><span>💖</span><span>💖</span><span>💖</span><span>💖</span>
 </div>
 
 <div id="app"></div>
 
 <script>
-const steps = [
+// floating hearts
+for(let i=0;i<30;i++){
+ let h=document.createElement("div");
+ h.className="heart";
+ h.style.left=Math.random()*100+"vw";
+ h.style.animationDuration=(10+Math.random()*6)+"s";
+ document.body.appendChild(h);
+}
+
+// heart rain
+setInterval(()=>{
+ let r=document.createElement("div");
+ r.className="rain";
+ r.innerText="💖";
+ r.style.left=Math.random()*100+"vw";
+ r.style.animationDuration=(2+Math.random()*2)+"s";
+ document.body.appendChild(r);
+ setTimeout(()=>r.remove(),4000);
+},200);
+
+// TEXT FLOW
+const steps=[
 "hi diya… waittt 💭 don’t rush this",
 "it’s been more than a month now… and somehow we got really close",
 "and I won’t lie… this feels special to me",
@@ -130,17 +192,9 @@ const steps = [
 "and also because… I like making you smile and blush 😏"
 ];
 
-const buttons = [
-"stay here 👀",
-"that’s true 😌",
-"hmm okay",
-"makes sense 💖",
-"what step? 👀",
-"you’re crazy 😭",
-"try me 😏",
-"we’ll see",
-"stop it 😭",
-"okay enough"
+const btns=[
+"stay 👀","true 😌","hmm","yeah 💖","what step 👀",
+"crazy 😭","try me 😏","we’ll see","stop 😭","okay okay"
 ];
 
 let i=0;
@@ -148,19 +202,34 @@ const app=document.getElementById("app");
 const heart=document.getElementById("heart").children;
 
 function updateHeart(){
-  for(let j=0;j<=i;j++){
-    heart[j].classList.add("active");
-  }
+ for(let j=0;j<=i;j++){
+   heart[j].classList.add("active");
+ }
+}
+
+// BLAST
+function heartBlast(){
+ for(let k=0;k<40;k++){
+   let b=document.createElement("div");
+   b.className="blast";
+   b.innerText="💖";
+   b.style.left="50%";
+   b.style.top="50%";
+   b.style.setProperty("--x",(Math.random()*300-150)+"px");
+   b.style.setProperty("--y",(Math.random()*300-150)+"px");
+   document.body.appendChild(b);
+   setTimeout(()=>b.remove(),1200);
+ }
 }
 
 function render(){
- app.innerHTML = `
+ app.innerHTML=`
   <div class="screen active">
     <div class="card">
       <p>${steps[i]}</p>
       ${
         i<steps.length-1
-        ? `<button onclick="next()">${buttons[i]}</button>`
+        ? `<button onclick="next()">${btns[i]}</button>`
         : `<a href="https://wa.me/919205781271?text=hi%20babe">
             <button class="cta">just tap this once 😌</button>
           </a>`
@@ -168,6 +237,10 @@ function render(){
     </div>
   </div>`;
  updateHeart();
+
+ if(i===steps.length-1){
+   heartBlast();
+ }
 }
 
 function next(){
