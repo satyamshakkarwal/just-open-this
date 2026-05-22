@@ -1,68 +1,45 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💖</title>
+<title>For Diya 💖</title>
 
 <style>
-:root{
-  --pink:#ff4d6d;
-}
-
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  background: linear-gradient(135deg,#fff0f5,#ffd6e7,#ffc2d1);
+  background:linear-gradient(135deg,#fff0f5,#ffd6e7,#ffc2d1);
   overflow:hidden;
 }
 
-/* BACKGROUND BLOBS */
-.bg{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-}
-.blob{
-  position:absolute;
-  width:280px;height:280px;
-  background:rgba(255,77,109,0.25);
-  border-radius:50%;
-  filter:blur(90px);
-  animation: floatBlob 10s infinite alternate ease-in-out;
-}
-.blob:nth-child(2){right:0;top:30%;}
-.blob:nth-child(3){bottom:0;left:20%;}
-@keyframes floatBlob{
-  to{transform:translate(50px,-40px);}
-}
-
-/* FLOATING HEARTS */
+/* PARALLAX HEARTS */
 .heart{
   position:absolute;
-  width:12px;height:12px;
-  background:var(--pink);
+  width:10px;height:10px;
+  background:#ff4d6d;
   transform:rotate(45deg);
-  opacity:.25;
-  animation: float 12s linear infinite;
+  opacity:.2;
+  animation:float 14s linear infinite;
 }
 .heart::before,.heart::after{
   content:"";
   position:absolute;
-  width:12px;height:12px;
-  background:var(--pink);
+  width:10px;height:10px;
+  background:#ff4d6d;
   border-radius:50%;
 }
-.heart::before{top:-6px;}
-.heart::after{left:-6px;}
+.heart::before{top:-5px;}
+.heart::after{left:-5px;}
+
 @keyframes float{
   0%{transform:translate3d(-10vw,100vh,0) rotate(45deg);}
   50%{transform:translate3d(10vw,40vh,0) rotate(45deg);}
   100%{transform:translate3d(-10vw,-10vh,0) rotate(45deg);}
 }
 
-/* SCREEN SYSTEM */
+/* SCREEN */
 .screen{
   position:absolute;
   inset:0;
@@ -84,24 +61,23 @@ body{
 .card{
   width:85%;
   max-width:340px;
-  padding:25px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.3);
-  backdrop-filter:blur(15px);
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  padding:28px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.35);
+  backdrop-filter:blur(18px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.1);
   text-align:center;
 }
 
-/* TEXT */
-h2{color:var(--pink);margin-bottom:10px;}
-p{font-size:14px;color:#555;}
+h2{color:#ff4d6d;}
+p{font-size:14px;color:#444;line-height:1.5;}
 
 /* BUTTON */
 button{
-  margin-top:15px;
-  padding:10px 18px;
+  margin-top:18px;
+  padding:12px 20px;
   border:none;
-  border-radius:20px;
+  border-radius:25px;
   background:linear-gradient(135deg,#ff4d6d,#ff85a2);
   color:white;
   font-size:14px;
@@ -110,26 +86,15 @@ button{
 }
 button:active{transform:scale(.92);}
 
-/* HEART INTERACTION */
-.tap-heart{
-  font-size:55px;
-  cursor:pointer;
-  transition:.3s;
-}
-.tap-heart.active{
-  transform:scale(1.4);
-}
-
-/* WHATSAPP BUTTON SPECIAL */
-.wa-btn{
+/* WHATSAPP BUTTON */
+.wa{
   background:linear-gradient(135deg,#25D366,#4BE081);
-  box-shadow:0 0 20px rgba(37,211,102,0.5);
   animation:pulse 2s infinite;
 }
 @keyframes pulse{
-  0%{box-shadow:0 0 10px rgba(37,211,102,0.4);}
-  50%{box-shadow:0 0 25px rgba(37,211,102,0.8);}
-  100%{box-shadow:0 0 10px rgba(37,211,102,0.4);}
+  0%{box-shadow:0 0 10px rgba(37,211,102,.4);}
+  50%{box-shadow:0 0 25px rgba(37,211,102,.8);}
+  100%{box-shadow:0 0 10px rgba(37,211,102,.4);}
 }
 </style>
 
@@ -137,95 +102,55 @@ button:active{transform:scale(.92);}
 
 <body>
 
-<div class="bg">
-  <div class="blob"></div>
-  <div class="blob"></div>
-  <div class="blob"></div>
-</div>
-
 <script>
-// hearts
-for(let i=0;i<25;i++){
-  let h=document.createElement("div");
-  h.className="heart";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(10+Math.random()*5)+"s";
-  document.body.appendChild(h);
+for(let i=0;i<30;i++){
+ let h=document.createElement("div");
+ h.className="heart";
+ h.style.left=Math.random()*100+"vw";
+ h.style.animationDuration=(10+Math.random()*6)+"s";
+ document.body.appendChild(h);
 }
 </script>
 
-<!-- SCREEN 1 -->
-
-<div id="s1" class="screen active">
-  <div class="card">
-    <h2>hey… wait 💭</h2>
-    <p>something just popped up here</p>
-    <button onclick="next(2)">tap to see 💖</button>
-  </div>
-</div>
-
-<!-- SCREEN 2 -->
-
-<div id="s2" class="screen">
-  <div class="card">
-    <h2>hmm…</h2>
-    <p>you’ve been talking to someone a little too much lately 😌</p>
-    <button onclick="next(3)">what does that mean 👀</button>
-  </div>
-</div>
-
-<!-- SCREEN 3 -->
-
-<div id="s3" class="screen">
-  <div class="card">
-    <h2>before we continue…</h2>
-    <p>tap this if you’ve smiled talking to me</p>
-    <div class="tap-heart" onclick="this.classList.toggle('active')">💖</div>
-    <button onclick="next(4)">okay maybe 😭</button>
-  </div>
-</div>
-
-<!-- SCREEN 4 -->
-
-<div id="s4" class="screen">
-  <div class="card">
-    <h2>yeah…</h2>
-    <p>this is starting to feel like something 😌</p>
-    <button onclick="next(5)">go on…</button>
-  </div>
-</div>
-
-<!-- SCREEN 5 -->
-
-<div id="s5" class="screen">
-  <div class="card">
-    <h2>almost there…</h2>
-    <p>just need a better way to reach you</p>
-    <button onclick="next(6)">okay…</button>
-  </div>
-</div>
-
-<!-- SCREEN 6 (WHATSAPP CTA) -->
-
-<div id="s6" class="screen">
-  <div class="card">
-    <h2>so let’s make this easy 💖</h2>
-    <p>just tap below and text me</p>
-
-```
-<a href="https://wa.me/919205781271?text=hi%20babe">
-  <button class="wa-btn">message me 💖</button>
-</a>
-```
-
-  </div>
-</div>
+<div id="app"></div>
 
 <script>
-function next(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
+const texts = [
+"hi diya… waittt 💭 don’t rush this",
+"it’s been more than a month now… and somehow we got really close",
+"and I won’t lie… this feels special to me",
+"I like that we’re taking it slow… it actually makes it better",
+"but I was thinking… 😌 maybe we move one tiny step forward",
+"talking to you daily… yeah, it’s kind of my addiction now",
+"and honestly… I just want more ways to annoy you",
+"I know you’re not a call person… but the day we finally talk? yeah… that’s going to be special",
+"I made this because… you’re way too special to me",
+"and also because… I like finding new ways to make you smile and blush 😏"
+];
+
+let i=0;
+const app=document.getElementById("app");
+
+function render(){
+ app.innerHTML = `
+  <div class="screen active">
+    <div class="card">
+      <p>${texts[i]}</p>
+      ${i<texts.length-1
+        ? `<button onclick="next()">continue 💖</button>`
+        : `<a href="https://wa.me/919205781271?text=hi%20babe">
+            <button class="wa">message me 💖</button>
+          </a>`}
+    </div>
+  </div>`;
 }
+
+function next(){
+ i++;
+ render();
+}
+
+render();
 </script>
 
 </body>
